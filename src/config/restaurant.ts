@@ -27,10 +27,10 @@ export const restaurant = {
   about:
     "Yaz Eat est un fast food spécialisé dans le poulet rôti : le meilleur blanc de poulet et des frites parfaitement cuites.",
   /** Public URL (https://…) or a file in /public, e.g. "/brand/logo.png". null = flame icon. */
-  logoUrl: "/brand/yaz-eat-logo.jpeg" as string | null, // official logo on its black background — light surfaces (header) + SEO
+  logoUrl: "/brand/yaz-eat-logo-horizontal.png" as string | null, // official logo (rooster + "YAZ eat"), transparent PNG 2172×724 — used everywhere + SEO
   /** Background-removed version (from the Canva export). Only for DARK backgrounds: its rooster
    *  and "YAZ" letters are black/white negative space and disappear on light backgrounds. */
-  logoOnDarkUrl: "/brand/yaz-eat-logo-transparent.png" as string | null,
+  logoOnDarkUrl: "/brand/yaz-eat-logo-horizontal-dark.png" as string | null, // same logo, "YAZ" in white — for dark backgrounds (hero, footer…)
   heroImageUrl: null as string | null,
   // Contact details — fill in with the real values (null = hidden on the site).
   phone: "0553 70 41 81" as string | null,

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Wordmark } from "@/components/site/wordmark";
+import { BrandLockup } from "@/components/site/brand-lockup";
 
 export const metadata: Metadata = { title: "Administration", robots: { index: false, follow: false } };
 
@@ -8,7 +8,7 @@ export default function AdminUnavailablePage() {
   return (
     <main className="texture-crumple grid min-h-dvh place-items-center bg-brand-900 px-4 py-10 text-white">
       <div className="w-full max-w-md text-center">
-        <p className="text-5xl"><Wordmark name="YAZ EAT" light /></p>
+        <BrandLockup onDark priority alt="YAZ EAT" className="mx-auto h-16" />
         <div className="mt-8 rounded-[var(--radius-card)] bg-paper p-6 text-left text-ink shadow-xl">
           <h1 className="text-2xl font-extrabold">Administration non disponible</h1>
           <p className="mt-2 text-ink-soft">

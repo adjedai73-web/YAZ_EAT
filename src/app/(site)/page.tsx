@@ -1,11 +1,11 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Star, Clock, MapPin, Phone } from "lucide-react";
 import {
   getActivePromotions, getCategories, getHighlightedProducts, getProductIdsWithExtras, getSettings,
 } from "@/lib/data/catalog";
 import { ButtonLink } from "@/components/ui/button";
 import { FlameMark, Wordmark } from "@/components/site/wordmark";
+import { BrandLockup } from "@/components/site/brand-lockup";
 import { ProductCard } from "@/components/site/product-card";
 import { ProductImage } from "@/components/site/product-image";
 import { PromoCard } from "@/components/site/promo-card";
@@ -28,18 +28,15 @@ export default async function HomePage() {
       <section className="texture-crumple relative overflow-hidden bg-brand-900 text-white">
         <div className={`mx-auto grid max-w-6xl gap-6 px-4 pb-10 pt-6 md:items-center md:pb-16 md:pt-10 ${settings.hero_image_url ? "md:grid-cols-[1.15fr_1fr]" : ""}`}>
           <div className="animate-rise">
-            <div className="flex items-center gap-3 md:gap-6">
-              {(settings.logo_dark_url ?? settings.logo_url)
-                ? <Image src={(settings.logo_dark_url ?? settings.logo_url)!} alt={`Logo ${settings.name}`} width={822} height={1280} priority className="h-20 w-auto shrink-0 md:h-32" />
-                : <FlameMark className="h-14 w-11 shrink-0 md:h-20 md:w-16" />}
-              <div className="min-w-0">
-                <h1 className="leading-[0.85]">
-                  <Wordmark name={settings.name} light className="block text-[clamp(2.75rem,12vw,6rem)] tracking-[-0.05em]" />
-                </h1>
-                <p className="mt-2 max-w-md text-base text-white/85 md:mt-3 md:text-xl">
-                  {settings.tagline ?? "Vos plats préférés, commandés en quelques secondes."}
-                </p>
-              </div>
+            <div className="min-w-0">
+              <h1 className="leading-none">
+                {settings.logo_url
+                  ? <BrandLockup onDark priority alt={settings.name} className="h-16 md:h-28" />
+                  : <Wordmark name={settings.name} light className="block text-[clamp(2.75rem,12vw,6rem)] tracking-[-0.05em]" />}
+              </h1>
+              <p className="mt-3 max-w-md text-base text-white/85 md:mt-4 md:text-xl">
+                {settings.tagline ?? "Vos plats préférés, commandés en quelques secondes."}
+              </p>
             </div>
             <div className="mt-4 flex flex-wrap gap-2 md:mt-6 md:gap-3">
               <ButtonLink href="/menu" className="px-3! text-[0.8125rem]! md:h-14! md:px-7! md:text-base!">Commander maintenant</ButtonLink>

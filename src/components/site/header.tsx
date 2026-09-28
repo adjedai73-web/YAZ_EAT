@@ -1,6 +1,6 @@
-import { FlameMark, Wordmark } from "./wordmark";
+import { Wordmark } from "./wordmark";
+import { BrandLockup } from "./brand-lockup";
 import Link from "next/link";
-import Image from "next/image";
 import type { RestaurantSettings } from "@/lib/types";
 import { buildWhatsAppLink } from "@/lib/whatsapp/message";
 import { CartButton } from "./cart-button";
@@ -21,11 +21,10 @@ export const NAV = [
 
 export function Logo({ settings, light }: { settings: RestaurantSettings; light?: boolean }) {
   return (
-    <Link href="/" className="flex items-center gap-2.5" aria-label={`${settings.name} — accueil`}>
-      {(light ? settings.logo_dark_url ?? settings.logo_url : settings.logo_url)
-        ? <Image src={(light ? settings.logo_dark_url ?? settings.logo_url : settings.logo_url)!} alt="" width={822} height={1280} className="h-11 w-auto" />
-        : <FlameMark className="h-9 w-7" />}
-      <Wordmark name={settings.name} light={light} className="text-2xl" />
+    <Link href="/" className="flex items-center" aria-label={`${settings.name} — accueil`}>
+      {settings.logo_url
+        ? <BrandLockup onDark={light} alt="" className="h-10 md:h-11" />
+        : <Wordmark name={settings.name} light={light} className="text-2xl" />}
     </Link>
   );
 }

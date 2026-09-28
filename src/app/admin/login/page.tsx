@@ -1,4 +1,4 @@
-import { Wordmark } from "@/components/site/wordmark";
+import { BrandLockup } from "@/components/site/brand-lockup";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { serverSupabase } from "@/lib/supabase/server";
@@ -16,7 +16,7 @@ export default async function AdminLoginPage({ searchParams }: { searchParams: P
   return (
     <main className="texture-crumple grid min-h-dvh place-items-center bg-brand-900 px-4 py-10">
       <div className="w-full max-w-sm">
-        <p className="mb-6 text-center text-5xl"><Wordmark name="YAZ EAT" light /></p>
+        <BrandLockup onDark priority alt="YAZ EAT" className="mx-auto mb-6 h-16" />
         <div className="rounded-[var(--radius-card)] bg-paper p-6 shadow-xl">
           <h1 className="text-2xl font-extrabold">Espace administrateur</h1>
           <p className="mt-1 text-sm text-ink-soft">Connectez-vous avec votre compte restaurant.</p>

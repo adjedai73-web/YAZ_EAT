@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { BrandLockup } from "@/components/site/brand-lockup";
 
 export default function NotFound() {
   return (
     <main className="grid min-h-dvh place-items-center texture-crumple bg-brand-900 px-4 text-center text-white">
       <div>
+        <BrandLockup onDark alt="YAZ EAT" className="mx-auto mb-6 h-14" />
         <p className="font-display text-[8rem] font-extrabold leading-none text-sun-500">404</p>
         <h1 className="mt-2 text-2xl font-bold">Cette page n'existe pas</h1>
         <p className="mt-2 text-white/75">Le plat ou la page demandé a peut-être été retiré.</p>
