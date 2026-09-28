@@ -32,8 +32,8 @@ export interface MenuProduct {
 export const extras: MenuExtra[] = [];
 
 export const categories: MenuCategory[] = [
-  { id: "poulet-braise-volcanique", name: "Poulet à la braise volcanique" },
-  { id: "accompagnements-snacks", name: "Accompagnements et Snacks" },
+  { id: "poulet-braise-volcanique", name: "Poulet à la braise volcanique", image: "/menu/poulet-grill.jpeg" },
+  { id: "accompagnements-snacks", name: "Accompagnements et Snacks", image: "/menu/frites.jpeg" },
 ];
 
 export const products: MenuProduct[] = [
