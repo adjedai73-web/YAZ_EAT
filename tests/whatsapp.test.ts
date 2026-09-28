@@ -43,9 +43,28 @@ test("discount line appears when a promotion applies", () => {
   assert.ok(m.includes("🏷️ *Réduction (-10 %):* -90 DA"));
 });
 
-test("wa.me link encodes the message", () => {
+test("WhatsApp link encodes the message (api.whatsapp.com/send)", () => {
   const url = buildWhatsAppLink("+213 550 00 00 00", "a b&c");
-  assert.equal(url, "https://wa.me/213550000000?text=a%20b%26c");
+  assert.equal(url, "https://api.whatsapp.com/send?phone=213550000000&text=a%20b%26c");
+  assert.equal(buildWhatsAppLink("213550000000"), "https://wa.me/213550000000");
+});
+
+test("emojis, French and Arabic survive the URL as real UTF-8 (no U+FFFD)", () => {
+  const text = "🍗📦👤📞📍🗺️🛒💰🏷️🚚🔥📝 • — é è à ç ô — طلب دجاج مشوي";
+  const url = buildWhatsAppLink("213550000000", text);
+  const encoded = url.split("&text=")[1]!;
+  assert.equal(decodeURIComponent(encoded), text);
+  assert.ok(!decodeURIComponent(encoded).includes("\uFFFD"));
+  assert.ok(encoded.includes("%F0%9F%8D%97"), "🍗 must be encoded as its 4 UTF-8 bytes");
+  assert.ok(encoded.includes("%D8%B7%D9%84%D8%A8"), "Arabic must be UTF-8 encoded");
+  assert.ok(!/[^A-Za-z0-9\-_.!~*'()%]/.test(encoded), "only URL-safe characters after encoding");
+});
+
+test("a half-cut emoji never breaks the link", () => {
+  const cut = "Note 🍗".slice(0, 6); // ends with a lone high surrogate
+  assert.doesNotThrow(() => buildWhatsAppLink("213550000000", cut));
+  const decoded = decodeURIComponent(buildWhatsAppLink("213550000000", cut).split("&text=")[1]!);
+  assert.equal(decoded, "Note ");
 });
 
 test("Algerian phone normalization", () => {

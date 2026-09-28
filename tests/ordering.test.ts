@@ -69,7 +69,7 @@ test("customer reference format YAZ-YYYYMMDD-XXXX (Algiers date)", () => {
   assert.match(generateReference("YAZ"), /^YAZ-\d{8}-[A-Z2-9]{4}$/);
 });
 
-test("prepared order → complete WhatsApp message and encoded wa.me URL", () => {
+test("prepared order → complete WhatsApp message and encoded WhatsApp URL", () => {
   const res = priceOrder({ orderType: "DELIVERY", lines: [{ productId: available.id, quantity: 1, extraIds, notes: "Bien cuit" }] });
   assert.ok(res.ok);
   if (!res.ok) return;
@@ -81,7 +81,7 @@ test("prepared order → complete WhatsApp message and encoded wa.me URL", () =>
     "*Adresse:* Rue 1, Biskra, Biskra", `• 1x ${available.name}`, ...(extra ? [`+ ${extra.name}`] : []), "_Bien cuit_", "*Sous-total:*", "*Livraison:*",
     "🔥 *TOTAL:", "*Type:* Livraison", "*Note:* Sonner"]) assert.ok(msg.includes(part), `missing: ${part}`);
   const url = buildWhatsAppLink("213550123456", msg);
-  assert.ok(url.startsWith("https://wa.me/213550123456?text="));
-  assert.equal(decodeURIComponent(url.split("?text=")[1]!), msg);
+  assert.ok(url.startsWith("https://api.whatsapp.com/send?phone=213550123456&text="));
+  assert.equal(decodeURIComponent(url.split("&text=")[1]!), msg);
   assert.ok(!/[\s*()]/.test(url.split("?")[0]!));
 });

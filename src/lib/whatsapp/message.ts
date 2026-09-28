@@ -54,8 +54,28 @@ export function createWhatsAppOrderMessage(order: WhatsAppOrder, restaurantName 
   return lines.join("\n");
 }
 
-/** Click-to-chat URL (wa.me). `phone` must be international digits, e.g. 213550000000. */
+/**
+ * Makes the text safe for URL encoding without losing any character:
+ * - NFC normalization (é, arabic letters… in their canonical form);
+ * - removes lone UTF-16 surrogates (e.g. an emoji cut in half by a length limit):
+ *   they would be sent as "\uFFFD" or make encodeURIComponent throw a URIError.
+ */
+function toSafeUnicode(text: string): string {
+  return text
+    .normalize("NFC")
+    .replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, "");
+}
+
+/**
+ * Click-to-chat URL. `phone` must be international digits, e.g. 213550000000.
+ *
+ * With a pre-filled message we use https://api.whatsapp.com/send instead of wa.me:
+ * the wa.me short link redirects to api.whatsapp.com and that redirect corrupts
+ * 4-byte UTF-8 characters (emojis 🍗📦🔥…), which then arrive as "�" in WhatsApp.
+ * The text is UTF-8 percent-encoded once with encodeURIComponent (spaces → %20, line breaks → %0A).
+ */
 export function buildWhatsAppLink(phone: string, text?: string): string {
   const digits = phone.replace(/\D/g, "");
-  return text ? `https://wa.me/${digits}?text=${encodeURIComponent(text)}` : `https://wa.me/${digits}`;
+  if (!text) return `https://wa.me/${digits}`;
+  return `https://api.whatsapp.com/send?phone=${digits}&text=${encodeURIComponent(toSafeUnicode(text))}`;
 }
