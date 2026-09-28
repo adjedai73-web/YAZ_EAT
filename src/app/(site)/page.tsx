@@ -26,20 +26,24 @@ export default async function HomePage() {
 
       {/* HERO — black crumpled paper + flame glow, giant brand wordmark */}
       <section className="texture-crumple relative overflow-hidden bg-brand-900 text-white">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 pb-14 pt-10 md:grid-cols-[1.15fr_1fr] md:items-end md:pb-20 md:pt-16">
+        <div className={`mx-auto grid max-w-6xl gap-6 px-4 pb-10 pt-6 md:items-center md:pb-16 md:pt-10 ${settings.hero_image_url ? "md:grid-cols-[1.15fr_1fr]" : ""}`}>
           <div className="animate-rise">
-            {(settings.logo_dark_url ?? settings.logo_url)
-              ? <Image src={(settings.logo_dark_url ?? settings.logo_url)!} alt={`Logo ${settings.name}`} width={822} height={1280} priority className="mb-4 h-28 w-auto md:h-40" />
-              : <FlameMark className="mb-4 h-14 w-11 md:h-20 md:w-16" />}
-            <h1 className="leading-[0.85]">
-              <Wordmark name={settings.name} light className="block text-[clamp(4.25rem,19vw,10.5rem)] tracking-[-0.05em]" />
-            </h1>
-            <p className="mt-6 max-w-md text-lg text-white/85 md:text-xl">
-              {settings.tagline ?? "Vos plats préférés, commandés en quelques secondes."}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/menu" size="lg">Commander maintenant</ButtonLink>
-              <ButtonLink href="/menu" size="lg" variant="outline" className="border-white/30 bg-transparent text-white hover:border-white hover:bg-white/5">
+            <div className="flex items-center gap-3 md:gap-6">
+              {(settings.logo_dark_url ?? settings.logo_url)
+                ? <Image src={(settings.logo_dark_url ?? settings.logo_url)!} alt={`Logo ${settings.name}`} width={822} height={1280} priority className="h-20 w-auto shrink-0 md:h-32" />
+                : <FlameMark className="h-14 w-11 shrink-0 md:h-20 md:w-16" />}
+              <div className="min-w-0">
+                <h1 className="leading-[0.85]">
+                  <Wordmark name={settings.name} light className="block text-[clamp(2.75rem,12vw,6rem)] tracking-[-0.05em]" />
+                </h1>
+                <p className="mt-2 max-w-md text-base text-white/85 md:mt-3 md:text-xl">
+                  {settings.tagline ?? "Vos plats préférés, commandés en quelques secondes."}
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2 md:mt-6 md:gap-3">
+              <ButtonLink href="/menu" className="px-3! text-[0.8125rem]! md:h-14! md:px-7! md:text-base!">Commander maintenant</ButtonLink>
+              <ButtonLink href="/menu" variant="outline" className="border-white/30 bg-transparent px-3! text-[0.8125rem]! text-white hover:border-white hover:bg-white/5 md:h-14! md:px-7! md:text-base!">
                 Voir le menu
               </ButtonLink>
             </div>
