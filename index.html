@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>YAZ EAT</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Yaz Eat, Les Bananiers – Alger. Poulet cuit à la pierre volcanique, sauce signature maison. Commande sur WhatsApp, livraison sur tout Alger : 0553 70 41 81.">
+<meta property="og:title" content="Yaz Eat · Poulet cuit à la pierre volcanique">
+<meta property="og:description" content="Sauce signature maison. Livraison sur tout Alger : 0553 70 41 81.">
+<meta property="og:image" content="https://yazeat.vercel.app/assets/demi-poulet.webp">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" type="image/webp" href="assets/coq.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700;900&family=Noto+Kufi+Arabic:wght@900&display=swap">
+<style>
+/* Layout: charte officielle Yaz Eat (28 oct. 2026). Noir porte l'identité, blanc respire, orange feu = accent unique (CTA, prix, badges, un mot fort). 70/30 max. Single dark look by brand rule. */
+:root{
+  --noir:#0A0A0A;
+  --noir-2:#151515;      /* surface légèrement relevée */
+  --line:#2A2A2A;
+  --blanc:#FFFFFF;
+  --gris:#B4B4B4;        /* texte secondaire sur noir */
+  --orange:#FF6E14;      /* Orange Feu */
+  --ok:#3DD68C;
+  --f:"Noto Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --f-ar:"Noto Kufi Arabic","Noto Sans Arabic",Tahoma,sans-serif;
+  --r:14px;
+  --max:1120px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--noir);color:var(--blanc);font-family:var(--f);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--noir)}
+img{max-width:100%;display:block}
+a{color:inherit}
+[hidden]{display:none!important}
+.wrap{max-width:var(--max);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-weight:900;text-transform:uppercase;line-height:.98;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.or{color:var(--orange)}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gris)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font:700 1rem/1 var(--f);padding:15px 22px;border-radius:999px;border:2px solid transparent;cursor:pointer;text-decoration:none;transition:transform .15s,border-color .15s}
+:is(a,button,input,select,textarea):focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.btn-main{background:var(--orange);color:var(--noir)}
+.btn-main:hover{transform:translateY(-2px)}
+.btn-ghost{border-color:var(--line);color:var(--blanc);background:transparent}
+.btn-ghost:hover{border-color:var(--blanc)}
+.wa{width:20px;height:20px;flex:none}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(10,10,10,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand img{width:46px;height:auto}
+.brand b{font-weight:900;font-size:1.25rem;letter-spacing:.04em}
+nav.links{display:flex;gap:24px;font-weight:700;font-size:.92rem}
+nav.links a{text-decoration:none;color:var(--gris)}
+nav.links a:hover{color:var(--blanc)}
+.top .btn{padding:11px 18px;font-size:.9rem}
+@media (max-width:780px){nav.links{display:none}}
+
+/* hero */
+.hero{padding-block:44px 56px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
+.hero-logo{width:150px;margin-bottom:22px}
+.hero h1{font-size:clamp(2.7rem,7.4vw,5.6rem)}
+.hero .lead{font-size:1.15rem;color:var(--gris);max-width:36ch;margin:20px 0 28px}
+.hero .lead strong{color:var(--blanc)}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.chip{display:inline-flex;align-items:center;gap:8px;font-size:.86rem;font-weight:700;padding:8px 13px;border-radius:999px;background:var(--noir-2);border:1px solid var(--line)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--gris)}
+.dot.open{background:var(--ok);box-shadow:0 0 0 4px rgba(61,214,140,.22)}
+.dot.closed{background:var(--gris)}
+.hero-photo{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/5;max-width:100%}
+.hero-photo img{width:100%;height:100%;object-fit:cover}
+.hero-photo .badge{position:absolute;left:16px;bottom:16px}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.hero-logo{width:120px}.hero-photo{aspect-ratio:1}}
+.badge{display:inline-block;font-size:.74rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;background:var(--orange);color:var(--noir);padding:6px 10px;border-radius:6px}
+
+/* strip */
+.strip{border-block:1px solid var(--line);overflow:hidden}
+.strip .track{display:flex;gap:36px;white-space:nowrap;padding-block:14px;font-weight:900;font-size:1.15rem;text-transform:uppercase;animation:slide 30s linear infinite;width:max-content}
+.strip .track span::after{content:"●";color:var(--orange);margin-left:36px;font-size:.6em;vertical-align:middle}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+section.blk{padding-block:72px}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:14px;margin-bottom:30px}
+.head h2{font-size:clamp(2.1rem,5.4vw,3.6rem)}
+.head p{color:var(--gris);max-width:44ch;margin:0}
+
+/* plats */
+.plats{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px}
+.plats figure{margin:0;position:relative;border-radius:var(--r);overflow:hidden;background:var(--noir-2);min-height:260px}
+.plats img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.plats figcaption{position:absolute;left:0;right:0;bottom:0;padding:44px 16px 14px;background:linear-gradient(transparent,rgba(10,10,10,.92));font-weight:700}
+.plats figcaption small{display:block;font-weight:400;color:var(--gris)}
+.plats .big{grid-row:span 2;min-height:540px}
+.plats .why{background:var(--noir-2);border:1px solid var(--line);padding:22px;display:flex;flex-direction:column;justify-content:center;gap:8px;min-height:0}
+.plats .why h3{font-size:1.35rem}
+.plats .why p{margin:0;color:var(--gris)}
+@media (max-width:860px){.plats{grid-template-columns:1fr 1fr}.plats .big{grid-column:span 2;grid-row:auto;min-height:360px}}
+@media (max-width:520px){.plats{grid-template-columns:1fr}.plats .big{grid-column:auto}}
+
+/* menu */
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:20px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;font:700 .92rem var(--f);padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--gris);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--blanc);color:var(--noir);border-color:var(--blanc)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.item{display:flex;flex-direction:column;border-radius:var(--r);background:var(--noir-2);border:1px solid var(--line);overflow:hidden;min-width:0}
+.item.star{border-color:var(--orange)}
+.item .ph{aspect-ratio:16/10;overflow:hidden;background:#000}
+.item .ph img{width:100%;height:100%;object-fit:cover}
+.item .body{display:flex;flex-direction:column;gap:8px;padding:18px;flex:1}
+.item .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.item h3{font-size:1.15rem;letter-spacing:0}
+.item .price{font-weight:700;font-variant-numeric:tabular-nums;color:var(--orange);white-space:nowrap}
+.item p{margin:0;color:var(--gris);font-size:.93rem;flex:1}
+.qty{display:flex;align-items:center;gap:10px;margin-top:6px}
+.add{font:700 .92rem var(--f);padding:10px 18px;border-radius:999px;border:0;background:var(--blanc);color:var(--noir);cursor:pointer}
+.add:hover{background:var(--orange)}
+.step{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--noir);color:var(--blanc);font-size:1.1rem;cursor:pointer}
+.qty output{min-width:2ch;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+
+/* commande */
+.order{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.panel{background:var(--noir-2);border:1px solid var(--line);border-radius:var(--r);padding:24px;min-width:0}
+.panel h3{font-size:1.4rem;margin-bottom:14px}
+.lines{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.lines li{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.empty{color:var(--gris);margin:0}
+.total{display:flex;justify-content:space-between;gap:12px;border-top:1px dashed var(--line);margin-top:14px;padding-top:14px;font-weight:700}
+.total span:last-child{color:var(--orange)}
+form{display:grid;gap:14px}
+label{display:grid;gap:6px;font-size:.88rem;font-weight:700;color:var(--gris)}
+input,textarea{font:400 1rem var(--f);color:var(--blanc);background:var(--noir);border:1px solid var(--line);border-radius:10px;padding:12px 14px;width:100%}
+textarea{min-height:76px;resize:vertical}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:8px}
+legend{font-size:.88rem;font-weight:700;color:var(--gris);margin-bottom:8px;padding:0}
+.modes{display:flex;flex-wrap:wrap;gap:8px}
+.modes label{display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--line);border-radius:999px;color:var(--blanc);cursor:pointer}
+.modes input{width:auto;accent-color:var(--orange)}
+.err{color:var(--orange);font-weight:700;font-size:.9rem;margin:0}
+.preview{white-space:pre-wrap;font:400 .86rem/1.5 var(--f);background:var(--noir);border:1px solid var(--line);border-radius:10px;padding:14px;margin:0;color:var(--gris);user-select:all;overflow-wrap:anywhere}
+.small{font-size:.86rem;color:var(--gris);margin:0}
+@media (max-width:860px){.order{grid-template-columns:1fr}}
+
+/* infos */
+.info{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.info .panel p{margin:0 0 6px}
+.hours{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.hours td{padding:8px 0;border-bottom:1px solid var(--line)}
+.hours td:last-child{text-align:right}
+.hours tr.today td{color:var(--orange);font-weight:700}
+.num{font-size:2rem;font-weight:900;letter-spacing:.02em;margin:4px 0 14px;user-select:all;font-variant-numeric:tabular-nums}
+.pill{display:inline-flex;align-items:center;font:700 .86rem var(--f);background:transparent;color:var(--blanc);border:1px solid var(--line);border-radius:999px;padding:9px 14px;cursor:pointer;text-decoration:none}
+.pill:hover{border-color:var(--blanc)}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+@media (max-width:900px){.info{grid-template-columns:1fr}}
+
+/* signature */
+.sign{text-align:center;padding-block:76px;border-top:1px solid var(--line)}
+.sign img{width:130px;margin:0 auto 22px}
+.sign .ar{font-family:var(--f-ar);font-weight:900;font-size:clamp(2.2rem,8vw,4.6rem);line-height:1.4;margin:0}
+.sign p{color:var(--gris);margin:6px 0 26px}
+footer{border-top:1px solid var(--line);color:var(--gris);font-size:.85rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:22px 100px}
+@media (min-width:861px){footer .wrap{padding-block:22px}}
+
+/* barre panier mobile */
+.float{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:var(--noir);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .25s}
+.float.show{transform:none}
+.float a{width:100%;justify-content:space-between}
+@media (min-width:861px){.float{display:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Yaz Eat, accueil"><img src="assets/coq.webp" alt="" width="46" height="45"><b>YAZ EAT</b></a>
+    <nav class="links" aria-label="Navigation">
+      <a href="#plats">Nos plats</a><a href="#menu">Menu</a><a href="#commande">Commander</a><a href="#infos">Infos</a>
+    </nav>
+    <a class="btn btn-main" href="#menu">Commander</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <img class="hero-logo" src="assets/logo.webp" alt="Logo Yaz Eat" width="150" height="169">
+        <p class="eyebrow">Les Bananiers · Alger</p>
+        <h1>Cuit à la pierre <span class="or">volcanique</span></h1>
+        <p class="lead">Poulet grillé, <strong>sauce signature maison</strong> et riz sucré. Commande sur WhatsApp, livraison disponible sur tout Alger.</p>
+        <div class="ctas">
+          <a class="btn btn-main" href="#menu">
+            <svg class="wa" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.4-.3Z"/></svg>
+            Commander maintenant
+          </a>
+          <a class="btn btn-ghost" href="#infos">Horaires & adresse</a>
+        </div>
+        <div class="facts">
+          <span class="chip"><span class="dot" id="statusDot"></span><span id="statusTxt">Horaires</span></span>
+          <span class="chip">Livraison sur tout Alger</span>
+          <span class="chip">0553 70 41 81</span>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="assets/demi-poulet.webp" alt="Demi-poulet cuit à la pierre volcanique, nappé de sauce signature" width="400" height="500" fetchpriority="high">
+        <span class="badge">Sauce signature</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip" aria-hidden="true">
+    <div class="track">
+      <span>Cuit à la pierre volcanique</span><span>La sauce signature</span><span>Riz sucré</span><span>Box Familiale</span><span>Livraison sur Alger</span>
+      <span>Cuit à la pierre volcanique</span><span>La sauce signature</span><span>Riz sucré</span><span>Box Familiale</span><span>Livraison sur Alger</span>
+    </div>
+  </div>
+
+  <section class="blk" id="plats">
+    <div class="wrap">
+      <div class="head">
+        <h2>Les plats, <span class="or">tels qu'ils arrivent</span></h2>
+        <p>Pas de photo d'ambiance. Le poulet, la sauce et le riz comme tu les reçois.</p>
+      </div>
+      <div class="plats">
+        <figure class="big">
+          <img src="assets/poulet-entier.webp" alt="Poulet entier grillé à la pierre volcanique avec accompagnements" loading="lazy" width="379" height="500">
+          <figcaption>Poulet entier grillé<small>Cuit à la pierre volcanique, pour partager.</small></figcaption>
+        </figure>
+        <figure>
+          <img src="assets/demi-poulet.webp" alt="Demi-poulet nappé de sauce signature" loading="lazy" width="400" height="500">
+          <figcaption>Demi-poulet sauce signature<small>La sauce maison, nappée généreuse.</small></figcaption>
+        </figure>
+        <figure>
+          <img src="assets/riz-sucre.webp" alt="Riz sucré Yaz Eat" loading="lazy" width="400" height="500">
+          <figcaption>Riz sucré<small>L'accompagnement maison.</small></figcaption>
+        </figure>
+        <div class="why">
+          <h3>La pierre <span class="or">volcanique</span></h3>
+          <p>Le poulet cuit sur la pierre chaude : saisi dehors, juteux dedans. C'est ce qui fait la différence avec une grillade ordinaire.</p>
+        </div>
+        <div class="why">
+          <h3>Box Familiale</h3>
+          <p>Pour les commandes à partager, à la maison ou au bureau. Livrée sur tout Alger.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="menu" style="padding-top:0">
+    <div class="wrap">
+      <div class="head">
+        <h2>Le menu</h2>
+        <p>Ajoute tes plats, ta commande se prépare plus bas et part sur WhatsApp.</p>
+      </div>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="blk" id="commande" style="padding-top:0">
+    <div class="wrap">
+      <div class="head">
+        <h2>Ta commande</h2>
+        <p>Envoie-la sur WhatsApp, on te répond pour confirmer le prix et l'heure.</p>
+      </div>
+      <div class="order">
+        <div class="panel">
+          <h3>Panier</h3>
+          <ul class="lines" id="lines"></ul>
+          <p class="empty" id="empty">Ton panier est vide. Choisis dans le menu.</p>
+          <div class="total"><span>Total</span><span id="total">—</span></div>
+        </div>
+        <div class="panel">
+          <h3>Tes infos</h3>
+          <form id="form" novalidate>
+            <label for="name">Nom<input id="name" autocomplete="name" placeholder="Ex. Karim"></label>
+            <label for="tel">Ton téléphone<input id="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ex. 0550 00 00 00"></label>
+            <fieldset>
+              <legend>Comment tu veux ta commande ?</legend>
+              <div class="modes">
+                <label><input type="radio" name="mode" id="m1" value="Livraison" checked> Livraison</label>
+                <label><input type="radio" name="mode" id="m2" value="À emporter"> À emporter</label>
+                <label><input type="radio" name="mode" id="m3" value="Sur place"> Sur place</label>
+              </div>
+            </fieldset>
+            <label for="addr" id="addrWrap">Adresse / commune (Alger)<input id="addr" autocomplete="street-address" placeholder="Ex. Bab Ezzouar, cité 2068 logts, bt 12"></label>
+            <label for="note">Remarque (optionnel)<textarea id="note" placeholder="Ex. sauce à part, sonner 2 fois…"></textarea></label>
+            <p class="err" id="err" hidden></p>
+            <button class="btn btn-main" type="submit">
+              <svg class="wa" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>
+              Envoyer sur WhatsApp
+            </button>
+            <p class="small" id="waHint" hidden>Si WhatsApp ne s'ouvre pas, copie ce message et envoie-le au <strong>0553 70 41 81</strong> :</p>
+            <pre class="preview" id="preview" hidden></pre>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="infos" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Infos pratiques</h2></div>
+      <div class="info">
+        <div class="panel">
+          <h3>Horaires</h3>
+          <table class="hours" id="hours">
+            <tr data-d="6"><td>Samedi</td><td>10h00 – 22h00</td></tr>
+            <tr data-d="0"><td>Dimanche</td><td>10h00 – 22h00</td></tr>
+            <tr data-d="1"><td>Lundi</td><td>10h00 – 22h00</td></tr>
+            <tr data-d="2"><td>Mardi</td><td>10h00 – 22h00</td></tr>
+            <tr data-d="3"><td>Mercredi</td><td>10h00 – 22h00</td></tr>
+            <tr data-d="4"><td>Jeudi</td><td>10h00 – 22h00</td></tr>
+            <tr data-d="5"><td>Vendredi</td><td>18h00 – 22h00</td></tr>
+          </table>
+        </div>
+        <div class="panel">
+          <h3>Adresse</h3>
+          <p>Les Bananiers — Alger</p>
+          <p class="small" style="margin-bottom:16px">Sur place, à emporter, et livraison disponible sur tout Alger.</p>
+          <a class="pill" href="https://www.google.com/maps/search/?api=1&query=Yaz+Eat+Les+Bananiers+Alger" target="_blank" rel="noopener">Ouvrir dans Maps</a>
+        </div>
+        <div class="panel">
+          <h3>Livraison</h3>
+          <p class="small">WhatsApp / téléphone</p>
+          <p class="num" id="num">0553 70 41 81</p>
+          <div class="pills">
+            <a class="pill" href="tel:+213553704181">Appeler</a>
+            <button class="pill" id="copyNum" type="button">Copier le numéro</button>
+            <a class="pill" href="https://www.instagram.com/yaz_eat/" target="_blank" rel="noopener">Instagram @yaz_eat</a>
+            <a class="pill" href="https://web.facebook.com/profile.php?id=61563930779857" target="_blank" rel="noopener">Facebook</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sign">
+    <div class="wrap">
+      <img src="assets/logo.webp" alt="Yaz Eat" width="130" height="146" loading="lazy">
+      <p class="ar" dir="rtl" lang="ar">البنة لي تخليك <span class="or">عندنا</span></p>
+      <p>Le goût qui te fait revenir.</p>
+      <a class="btn btn-main" href="#menu">Je commande</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr">2026</span> Yaz Eat · Les Bananiers — Alger · @yaz_eat</span>
+    <span>Site réalisé par Advortex</span>
+  </div>
+</footer>
+
+<div class="float" id="float">
+  <a class="btn btn-main" href="#commande"><span id="fCount">0 article</span><span>Voir la commande →</span></a>
+</div>
+
+<script>
+/* ===== CONFIG ===== */
+const CONFIG = { phone:"213553704181", display:"0553 70 41 81", currency:"DA" };
+/* price: 0 = prix non affiché (confirmé sur WhatsApp). Mettre le vrai prix quand le client le donne. */
+const MENU = [
+  {cat:"Poulet", items:[
+    {id:"p1", name:"Poulet entier volcanique", desc:"Poulet entier cuit à la pierre volcanique, sauce signature.", price:0, star:true, img:"assets/poulet-entier.webp"},
+    {id:"p2", name:"Demi-poulet sauce signature", desc:"Le demi-poulet, nappé de notre sauce maison.", price:0, img:"assets/demi-poulet.webp"}
+  ]},
+  {cat:"Box Familiale", items:[
+    {id:"b1", name:"Box Familiale", desc:"La commande à partager, pour toute la famille.", price:0, star:true}
+  ]},
+  {cat:"Sandwichs", items:[
+    {id:"s1", name:"Sandwich poulet volcanique", desc:"Poulet cuit à la pierre, sauce signature.", price:0}
+  ]},
+  {cat:"Accompagnements", items:[
+    {id:"a1", name:"Riz sucré", desc:"L'accompagnement maison.", price:0, img:"assets/riz-sucre.webp"},
+    {id:"a2", name:"Frites", desc:"Portion de frites.", price:0}
+  ]},
+  {cat:"Boissons", items:[
+    {id:"d1", name:"Boisson fraîche", desc:"Précise ta boisson dans la remarque.", price:0}
+  ]},
+  {cat:"Desserts", items:[
+    {id:"e1", name:"Dessert du jour", desc:"Demande ce qu'il y a aujourd'hui.", price:0}
+  ]}
+];
+/* ================== */
+
+const ALL = MENU.flatMap(c=>c.items);
+const fmt = n => n.toLocaleString("fr-FR")+" "+CONFIG.currency;
+let cart = {};
+try{ cart = JSON.parse(localStorage.getItem("yaz_cart")||"{}") || {}; }catch(e){ cart = {}; }
+const save = () => { try{ localStorage.setItem("yaz_cart", JSON.stringify(cart)); }catch(e){} };
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+const tabs = document.getElementById("tabs"), grid = document.getElementById("grid");
+let current = 0;
+MENU.forEach((c,i)=>{
+  const b = document.createElement("button");
+  b.className="tab"; b.type="button"; b.setAttribute("role","tab"); b.textContent=c.cat;
+  b.addEventListener("click",()=>{current=i;renderGrid();});
+  tabs.appendChild(b);
+});
+function renderGrid(){
+  [...tabs.children].forEach((b,i)=>b.setAttribute("aria-selected", i===current));
+  grid.innerHTML = MENU[current].items.map(it=>{
+    const q = cart[it.id]||0;
+    return `<article class="item${it.star?" star":""}">
+      ${it.img?`<div class="ph"><img src="${it.img}" alt="${it.name}" loading="lazy"></div>`:""}
+      <div class="body">
+        ${it.star?'<span class="badge" style="align-self:flex-start">Signature</span>':""}
+        <div class="row"><h3>${it.name}</h3>${it.price>0?`<span class="price">${fmt(it.price)}</span>`:""}</div>
+        <p>${it.desc}</p>
+        <div class="qty">${q
+          ? `<button class="step" type="button" data-id="${it.id}" data-d="-1" aria-label="Retirer : ${it.name}">−</button><output>${q}</output><button class="step" type="button" data-id="${it.id}" data-d="1" aria-label="Ajouter : ${it.name}">+</button>`
+          : `<button class="add" type="button" data-id="${it.id}" data-d="1">Ajouter</button>`}</div>
+      </div>
+    </article>`;
+  }).join("");
+}
+grid.addEventListener("click",e=>{
+  const b = e.target.closest("[data-id]"); if(!b) return;
+  const id=b.dataset.id, d=+b.dataset.d;
+  cart[id]=Math.max(0,(cart[id]||0)+d); if(!cart[id]) delete cart[id];
+  save(); renderGrid(); renderCart();
+});
+
+function renderCart(){
+  const rows = Object.entries(cart).map(([id,q])=>({it:ALL.find(x=>x.id===id),q})).filter(r=>r.it);
+  document.getElementById("lines").innerHTML = rows.map(r=>`<li><span>${r.q} × ${r.it.name}</span><span>${r.it.price>0?fmt(r.it.price*r.q):""}</span></li>`).join("");
+  document.getElementById("empty").hidden = rows.length>0;
+  const allPriced = rows.length && rows.every(r=>r.it.price>0);
+  const total = rows.reduce((s,r)=>s+r.it.price*r.q,0), count = rows.reduce((s,r)=>s+r.q,0);
+  document.getElementById("total").textContent = !rows.length ? "—" : (allPriced ? fmt(total) : "Confirmé sur WhatsApp");
+  document.getElementById("fCount").textContent = count+(count>1?" articles":" article");
+  document.getElementById("float").classList.toggle("show", count>0);
+  return {rows,total,allPriced};
+}
+
+const addrWrap = document.getElementById("addrWrap");
+document.querySelectorAll('input[name="mode"]').forEach(r=>r.addEventListener("change",()=>{
+  addrWrap.hidden = document.querySelector('input[name="mode"]:checked').value!=="Livraison";
+}));
+
+document.getElementById("form").addEventListener("submit",e=>{
+  e.preventDefault();
+  const err = document.getElementById("err");
+  const {rows,total,allPriced} = renderCart();
+  const v = id => document.getElementById(id).value.trim();
+  const name=v("name"), tel=v("tel"), addr=v("addr"), note=v("note");
+  const mode = document.querySelector('input[name="mode"]:checked').value;
+  let msg = "";
+  if(!rows.length) msg="Ajoute au moins un plat depuis le menu.";
+  else if(!name) msg="Écris ton nom pour qu'on sache à qui préparer la commande.";
+  else if(mode==="Livraison" && !addr) msg="Écris ton adresse ou ta commune pour la livraison.";
+  err.textContent=msg; err.hidden=!msg;
+  if(msg) return;
+  const text = ["Salam Yaz Eat, nouvelle commande :","",
+    ...rows.map(r=>`• ${r.q} × ${r.it.name}`),"",
+    allPriced?`Total : ${fmt(total)}`:"",
+    `Nom : ${name}`,
+    tel?`Tél : ${tel}`:"",
+    `Mode : ${mode}`+(mode==="Livraison"?` – ${addr}`:""),
+    note?`Remarque : ${note}`:""].filter(Boolean).join("\n");
+  const pre = document.getElementById("preview");
+  pre.textContent=text; pre.hidden=false; document.getElementById("waHint").hidden=false;
+  const a = document.createElement("a");
+  a.href = "https://wa.me/"+CONFIG.phone+"?text="+encodeURIComponent(text);
+  a.target="_blank"; a.rel="noopener"; document.body.appendChild(a); a.click(); a.remove();
+});
+
+document.getElementById("copyNum").addEventListener("click",ev=>{
+  const btn=ev.currentTarget;
+  const sel=()=>{const r=document.createRange();r.selectNodeContents(document.getElementById("num"));const s=getSelection();s.removeAllRanges();s.addRange(r);};
+  if(!navigator.clipboard){sel();return;}
+  navigator.clipboard.writeText(CONFIG.display).then(()=>{btn.textContent="Copié";setTimeout(()=>btn.textContent="Copier le numéro",1500)}).catch(sel);
+});
+
+(function(){
+  let d,h;
+  try{
+    const p = new Intl.DateTimeFormat("en-GB",{timeZone:"Africa/Algiers",weekday:"short",hour:"numeric",minute:"numeric",hour12:false}).formatToParts(new Date());
+    d = {Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[p.find(x=>x.type==="weekday").value];
+    h = (+p.find(x=>x.type==="hour").value % 24) + (+p.find(x=>x.type==="minute").value)/60;
+  }catch(e){const n=new Date();d=n.getDay();h=n.getHours()+n.getMinutes()/60;}
+  const [o,c] = d===5?[18,22]:[10,22];
+  const open = h>=o && h<c;
+  document.getElementById("statusDot").classList.add(open?"open":"closed");
+  document.getElementById("statusTxt").textContent = open ? `Ouvert · jusqu'à ${c}h00` : (h<o?`Fermé · ouvre à ${o}h00`:"Fermé · à demain");
+  const row = document.querySelector(`#hours tr[data-d="${d}"]`); if(row) row.classList.add("today");
+})();
+
+renderGrid(); renderCart();
+</script>
+</body>
+</html>
