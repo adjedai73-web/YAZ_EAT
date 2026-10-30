@@ -75,10 +75,10 @@ nav.links a:hover{color:var(--blanc)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--gris)}
 .dot.open{background:var(--ok);box-shadow:0 0 0 4px rgba(61,214,140,.22)}
 .dot.closed{background:var(--gris)}
-.hero-photo{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/5;max-width:100%}
+.hero-photo{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:16/10;max-width:100%}
 .hero-photo img{width:100%;height:100%;object-fit:cover}
 .hero-photo .badge{position:absolute;left:16px;bottom:16px}
-@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.hero-logo{width:120px}.hero-photo{aspect-ratio:1}}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.hero-logo{width:120px}.hero-photo{aspect-ratio:16/10}}
 .badge{display:inline-block;font-size:.74rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;background:var(--orange);color:var(--noir);padding:6px 10px;border-radius:6px}
 
 /* strip */
@@ -125,6 +125,8 @@ section.blk{padding-block:72px}
 .item.star{border-color:var(--orange)}
 .item .ph{aspect-ratio:16/10;overflow:hidden;background:#000}
 .item .ph img{width:100%;height:100%;object-fit:cover}
+.item .ph.ph-empty{display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#2a2622,#0d0c0b 70%)}
+.item .ph.ph-empty img{width:64px;height:auto;object-fit:contain;opacity:.35}
 .item .body{display:flex;flex-direction:column;gap:8px;padding:18px;flex:1}
 .item .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .item h3{font-size:1.15rem;letter-spacing:0}
@@ -222,7 +224,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         </div>
       </div>
       <div class="hero-photo">
-        <img src="assets/demi-poulet.webp" alt="Demi-poulet cuit à la pierre volcanique, nappé de sauce signature" width="400" height="500" fetchpriority="high">
+        <img src="assets/menu/demi-poulet.webp" alt="Demi-poulet cuit à la pierre volcanique, nappé de sauce signature" width="720" height="450" fetchpriority="high">
         <span class="badge">Sauce signature</span>
       </div>
     </div>
@@ -243,15 +245,15 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
       </div>
       <div class="plats">
         <figure class="big">
-          <img src="assets/poulet-entier.webp" alt="Poulet entier grillé à la pierre volcanique avec accompagnements" loading="lazy" width="379" height="500">
+          <img src="assets/menu/poulet-entier.webp" alt="Poulet entier grillé à la pierre volcanique avec accompagnements" loading="lazy" width="379" height="500">
           <figcaption>Poulet entier grillé<small>Cuit à la pierre volcanique, pour partager.</small></figcaption>
         </figure>
         <figure>
-          <img src="assets/demi-poulet.webp" alt="Demi-poulet nappé de sauce signature" loading="lazy" width="400" height="500">
+          <img src="assets/menu/demi-poulet.webp" alt="Demi-poulet nappé de sauce signature" loading="lazy" width="400" height="500">
           <figcaption>Demi-poulet sauce signature<small>La sauce maison, nappée généreuse.</small></figcaption>
         </figure>
         <figure>
-          <img src="assets/riz-sucre.webp" alt="Riz sucré Yaz Eat" loading="lazy" width="400" height="500">
+          <img src="assets/menu/riz-sucre.webp" alt="Riz sucré Yaz Eat" loading="lazy" width="400" height="500">
           <figcaption>Riz sucré<small>L'accompagnement maison.</small></figcaption>
         </figure>
         <div class="why">
@@ -382,21 +384,21 @@ const CONFIG = { phone:"213553704181", display:"0553 70 41 81", currency:"DA" };
 /* Prix en DA. opts = choix (cuisse/blanche, goût des frites…) avec leur prix. */
 const MENU = [
   {cat:"Poulet", note:"Cuit à la pierre volcanique, sauce signature", items:[
-    {id:"p1", name:"Poulet entier", desc:"Le poulet entier cuit à la pierre volcanique, nappé de sauce signature. Pour partager.", price:1300, star:true, img:"assets/poulet-entier.webp"},
-    {id:"p2", name:"Demi-poulet", desc:"Le demi-poulet, nappé de notre sauce maison.", price:700, img:"assets/demi-poulet.webp"},
-    {id:"p3", name:"Quart de poulet", desc:"La portion solo. Choisis cuisse ou blanc.", opts:[{k:"cuisse",label:"Cuisse",price:400},{k:"blanc",label:"Blanc",price:450}]}
+    {id:"p1", name:"Poulet entier", desc:"Le poulet entier cuit à la pierre volcanique, nappé de sauce signature. Pour partager.", price:1300, star:true, img:"assets/menu/poulet-entier.webp"},
+    {id:"p2", name:"Demi-poulet", desc:"Le demi-poulet, nappé de notre sauce maison.", price:700, img:"assets/menu/demi-poulet.webp"},
+    {id:"p3", name:"Quart de poulet", desc:"La portion solo. Choisis cuisse ou blanc.", img:"assets/menu/quart.webp", opts:[{k:"cuisse",label:"Cuisse",price:400},{k:"blanc",label:"Blanc",price:450}]}
   ]},
   {cat:"Sandwichs", items:[
     {id:"s1", name:"Sandwich poulet signature", desc:"Poulet cuit à la pierre, sauce signature maison.", price:350, star:true},
     {id:"s2", name:"Sandwich mariné", desc:"Poulet mariné, grillé à la pierre.", price:350},
-    {id:"s3", name:"Sandwich kebda", desc:"Le sandwich kebda.", price:300}
+    {id:"s3", name:"Sandwich kebda", desc:"Le sandwich kebda.", price:300, img:"assets/menu/kebda.webp"}
   ]},
   {cat:"Accompagnements", items:[
-    {id:"a1", name:"Riz sucré", desc:"L'accompagnement signature de la maison.", price:250, img:"assets/riz-sucre.webp"},
+    {id:"a1", name:"Riz sucré", desc:"L'accompagnement signature de la maison.", price:250, img:"assets/menu/riz-sucre.webp"},
     {id:"a2", name:"Riz épicé", desc:"Riz relevé aux épices.", price:250},
-    {id:"a3", name:"Borghol", desc:"Le borghol maison.", price:250},
+    {id:"a3", name:"Borghol", desc:"Le borghol maison.", price:250, img:"assets/menu/borghol.webp"},
     {id:"a4", name:"Frites", desc:"Choisis ton goût.", opts:[{k:"simple",label:"Simple",price:200},{k:"fromage",label:"Goût fromage",price:200},{k:"fume",label:"Goût fumé",price:200}]},
-    {id:"a5", name:"Salade", desc:"Salade fraîche.", price:200}
+    {id:"a5", name:"Salade", desc:"Salade fraîche.", price:200, img:"assets/menu/salade.webp"}
   ]}
 ];
 /* ================== */
@@ -428,7 +430,7 @@ function card(it){
   const q = cart[key]||0;
   const price = it.opts ? it.opts.find(o=>o.k===sel[it.id]).price : it.price;
   return `<article class="item${it.star?" star":""}">
-    ${it.img?`<div class="ph"><img src="${it.img}" alt="${esc(it.name)}" loading="lazy"></div>`:""}
+    <div class="ph${it.img?"":" ph-empty"}">${it.img?`<img src="${it.img}" alt="${esc(it.name)}" loading="lazy">`:`<img src="assets/coq.webp" alt="" loading="lazy">`}</div>
     <div class="body">
       ${it.star?'<span class="badge" style="align-self:flex-start">Signature</span>':""}
       <div class="row"><h3>${esc(it.name)}</h3><span class="price">${fmt(price)}</span></div>
