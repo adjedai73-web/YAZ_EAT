@@ -1,0 +1,4 @@
+t-base 200
+t-big 403
+t-big-noq 403
+t-noresize 403
