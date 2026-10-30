@@ -15,7 +15,7 @@ jobs:
           mkdir -p assets/src
           while IFS='|' read -r name url; do
             [ -z "$name" ] && continue
-            curl -fsSL "$url" -o "assets/src/$name.png" || echo "FAILED $name"
+            code=$(curl -sSL -w "%{http_code}" "$url" -o "assets/src/$name.png"); echo "$name $code" >> assets/src/_log.txt; [ "$code" = 200 ] || rm -f "assets/src/$name.png"
           done < .github/img-urls.txt
           ls -la assets/src
       - name: Commit
