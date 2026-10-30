@@ -108,7 +108,17 @@ section.blk{padding-block:72px}
 /* menu */
 .tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:20px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex:none;font:700 .92rem var(--f);padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--gris);cursor:pointer}
+.tabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 66px);z-index:20;background:var(--noir);padding-block:10px;margin-bottom:8px}
+.cat{display:grid;gap:14px;scroll-margin-top:140px}
+.cat + .cat{margin-top:34px}
+.cat-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.cat-h h3{font-size:1.5rem}
+.cat-h span{color:var(--gris);font-size:.86rem}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opt{font:700 .82rem var(--f);padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--gris);cursor:pointer}
+.opt[aria-pressed="true"]{border-color:var(--orange);color:var(--blanc);background:rgba(255,110,20,.12)}
+.opt small{font-weight:400;color:var(--gris);margin-left:4px}
+.tab{flex:none;text-decoration:none;font:700 .92rem var(--f);padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--gris);cursor:pointer}
 .tab[aria-selected="true"]{background:var(--blanc);color:var(--noir);border-color:var(--blanc)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
 .item{display:flex;flex-direction:column;border-radius:var(--r);background:var(--noir-2);border:1px solid var(--line);overflow:hidden;min-width:0}
@@ -220,8 +230,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 
   <div class="strip" aria-hidden="true">
     <div class="track">
-      <span>Cuit à la pierre volcanique</span><span>La sauce signature</span><span>Riz sucré</span><span>Box Familiale</span><span>Livraison sur Alger</span>
-      <span>Cuit à la pierre volcanique</span><span>La sauce signature</span><span>Riz sucré</span><span>Box Familiale</span><span>Livraison sur Alger</span>
+      <span>Cuit à la pierre volcanique</span><span>La sauce signature</span><span>Riz sucré</span><span>Sandwich signature</span><span>Livraison sur Alger</span>
+      <span>Cuit à la pierre volcanique</span><span>La sauce signature</span><span>Riz sucré</span><span>Sandwich signature</span><span>Livraison sur Alger</span>
     </div>
   </div>
 
@@ -249,8 +259,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
           <p>Le poulet cuit sur la pierre chaude : saisi dehors, juteux dedans. C'est ce qui fait la différence avec une grillade ordinaire.</p>
         </div>
         <div class="why">
-          <h3>Box Familiale</h3>
-          <p>Pour les commandes à partager, à la maison ou au bureau. Livrée sur tout Alger.</p>
+          <h3>Poulet entier <span class="or">1 300 DA</span></h3>
+          <p>Pour partager à la maison ou au bureau, avec riz, borghol ou frites. Livré sur tout Alger.</p>
         </div>
       </div>
     </div>
@@ -262,8 +272,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         <h2>Le menu</h2>
         <p>Ajoute tes plats, ta commande se prépare plus bas et part sur WhatsApp.</p>
       </div>
-      <div class="tabs" role="tablist" id="tabs"></div>
-      <div class="grid" id="grid"></div>
+      <nav class="tabs" id="tabs" aria-label="Catégories du menu"></nav>
+      <div id="grid"></div>
     </div>
   </section>
 
@@ -271,14 +281,14 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
     <div class="wrap">
       <div class="head">
         <h2>Ta commande</h2>
-        <p>Envoie-la sur WhatsApp, on te répond pour confirmer le prix et l'heure.</p>
+        <p>Envoie-la sur WhatsApp, on te répond pour confirmer l'heure et les frais de livraison.</p>
       </div>
       <div class="order">
         <div class="panel">
           <h3>Panier</h3>
           <ul class="lines" id="lines"></ul>
           <p class="empty" id="empty">Ton panier est vide. Choisis dans le menu.</p>
-          <div class="total"><span>Total</span><span id="total">—</span></div>
+          <div class="total"><span id="totalLbl">Total</span><span id="total">—</span></div>
         </div>
         <div class="panel">
           <h3>Tes infos</h3>
@@ -363,91 +373,105 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 </footer>
 
 <div class="float" id="float">
-  <a class="btn btn-main" href="#commande"><span id="fCount">0 article</span><span>Voir la commande →</span></a>
+  <a class="btn btn-main" href="#commande"><span id="fCount">0 article</span><span>Commander →</span></a>
 </div>
 
 <script>
 /* ===== CONFIG ===== */
 const CONFIG = { phone:"213553704181", display:"0553 70 41 81", currency:"DA" };
-/* price: 0 = prix non affiché (confirmé sur WhatsApp). Mettre le vrai prix quand le client le donne. */
+/* Prix en DA. opts = choix (cuisse/blanche, goût des frites…) avec leur prix. */
 const MENU = [
-  {cat:"Poulet", items:[
-    {id:"p1", name:"Poulet entier volcanique", desc:"Poulet entier cuit à la pierre volcanique, sauce signature.", price:0, star:true, img:"assets/poulet-entier.webp"},
-    {id:"p2", name:"Demi-poulet sauce signature", desc:"Le demi-poulet, nappé de notre sauce maison.", price:0, img:"assets/demi-poulet.webp"}
-  ]},
-  {cat:"Box Familiale", items:[
-    {id:"b1", name:"Box Familiale", desc:"La commande à partager, pour toute la famille.", price:0, star:true}
+  {cat:"Poulet", note:"Cuit à la pierre volcanique, sauce signature", items:[
+    {id:"p1", name:"Poulet entier", desc:"Le poulet entier cuit à la pierre volcanique, nappé de sauce signature. Pour partager.", price:1300, star:true, img:"assets/poulet-entier.webp"},
+    {id:"p2", name:"Demi-poulet", desc:"Le demi-poulet, nappé de notre sauce maison.", price:700, img:"assets/demi-poulet.webp"},
+    {id:"p3", name:"Quart de poulet", desc:"La portion solo. Choisis cuisse ou blanc.", opts:[{k:"cuisse",label:"Cuisse",price:400},{k:"blanc",label:"Blanc",price:450}]}
   ]},
   {cat:"Sandwichs", items:[
-    {id:"s1", name:"Sandwich poulet volcanique", desc:"Poulet cuit à la pierre, sauce signature.", price:0}
+    {id:"s1", name:"Sandwich poulet signature", desc:"Poulet cuit à la pierre, sauce signature maison.", price:350, star:true},
+    {id:"s2", name:"Sandwich mariné", desc:"Poulet mariné, grillé à la pierre.", price:350},
+    {id:"s3", name:"Sandwich kebda", desc:"Le sandwich kebda.", price:300}
   ]},
   {cat:"Accompagnements", items:[
-    {id:"a1", name:"Riz sucré", desc:"L'accompagnement maison.", price:0, img:"assets/riz-sucre.webp"},
-    {id:"a2", name:"Frites", desc:"Portion de frites.", price:0}
-  ]},
-  {cat:"Boissons", items:[
-    {id:"d1", name:"Boisson fraîche", desc:"Précise ta boisson dans la remarque.", price:0}
-  ]},
-  {cat:"Desserts", items:[
-    {id:"e1", name:"Dessert du jour", desc:"Demande ce qu'il y a aujourd'hui.", price:0}
+    {id:"a1", name:"Riz sucré", desc:"L'accompagnement signature de la maison.", price:250, img:"assets/riz-sucre.webp"},
+    {id:"a2", name:"Riz épicé", desc:"Riz relevé aux épices.", price:250},
+    {id:"a3", name:"Borghol", desc:"Le borghol maison.", price:250},
+    {id:"a4", name:"Frites", desc:"Choisis ton goût.", opts:[{k:"simple",label:"Simple",price:200},{k:"fromage",label:"Goût fromage",price:200},{k:"fume",label:"Goût fumé",price:200}]},
+    {id:"a5", name:"Salade", desc:"Salade fraîche.", price:200}
   ]}
 ];
 /* ================== */
 
 const ALL = MENU.flatMap(c=>c.items);
 const fmt = n => n.toLocaleString("fr-FR")+" "+CONFIG.currency;
+const esc = t => String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+/* cart key: "id" or "id:optKey" */
+function line(key){
+  const [id,k] = key.split(":"); const it = ALL.find(x=>x.id===id); if(!it) return null;
+  if(it.opts){ const o = it.opts.find(x=>x.k===k); if(!o) return null; return {name:`${it.name} (${o.label})`, price:o.price}; }
+  return {name:it.name, price:it.price};
+}
 let cart = {};
-try{ cart = JSON.parse(localStorage.getItem("yaz_cart")||"{}") || {}; }catch(e){ cart = {}; }
-const save = () => { try{ localStorage.setItem("yaz_cart", JSON.stringify(cart)); }catch(e){} };
+try{ cart = JSON.parse(localStorage.getItem("yaz_cart_v2")||"{}") || {}; }catch(e){ cart = {}; }
+const save = () => { try{ localStorage.setItem("yaz_cart_v2", JSON.stringify(cart)); }catch(e){} };
+const sel = {}; ALL.forEach(it=>{ if(it.opts) sel[it.id]=it.opts[0].k; });
 document.getElementById("yr").textContent = new Date().getFullYear();
 
 const tabs = document.getElementById("tabs"), grid = document.getElementById("grid");
-let current = 0;
-MENU.forEach((c,i)=>{
-  const b = document.createElement("button");
-  b.className="tab"; b.type="button"; b.setAttribute("role","tab"); b.textContent=c.cat;
-  b.addEventListener("click",()=>{current=i;renderGrid();});
-  tabs.appendChild(b);
+tabs.innerHTML = MENU.map((c,i)=>`<a class="tab" href="#cat-${i}">${c.cat}</a>`).join("");
+tabs.addEventListener("click",e=>{
+  const a=e.target.closest("a.tab"); if(!a) return; e.preventDefault();
+  document.querySelector(a.getAttribute("href")).scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
 });
+
+function card(it){
+  const key = it.opts ? `${it.id}:${sel[it.id]}` : it.id;
+  const q = cart[key]||0;
+  const price = it.opts ? it.opts.find(o=>o.k===sel[it.id]).price : it.price;
+  return `<article class="item${it.star?" star":""}">
+    ${it.img?`<div class="ph"><img src="${it.img}" alt="${esc(it.name)}" loading="lazy"></div>`:""}
+    <div class="body">
+      ${it.star?'<span class="badge" style="align-self:flex-start">Signature</span>':""}
+      <div class="row"><h3>${esc(it.name)}</h3><span class="price">${fmt(price)}</span></div>
+      <p>${esc(it.desc)}</p>
+      ${it.opts?`<div class="opts" role="group" aria-label="Choix pour ${esc(it.name)}">${it.opts.map(o=>`<button class="opt" type="button" data-sel="${it.id}" data-k="${o.k}" aria-pressed="${o.k===sel[it.id]}">${esc(o.label)}${new Set(it.opts.map(x=>x.price)).size>1?`<small>${fmt(o.price)}</small>`:""}</button>`).join("")}</div>`:""}
+      <div class="qty">${q
+        ? `<button class="step" type="button" data-key="${key}" data-d="-1" aria-label="Retirer">−</button><output>${q}</output><button class="step" type="button" data-key="${key}" data-d="1" aria-label="Ajouter">+</button>`
+        : `<button class="add" type="button" data-key="${key}" data-d="1">Ajouter</button>`}</div>
+    </div>
+  </article>`;
+}
 function renderGrid(){
-  [...tabs.children].forEach((b,i)=>b.setAttribute("aria-selected", i===current));
-  grid.innerHTML = MENU[current].items.map(it=>{
-    const q = cart[it.id]||0;
-    return `<article class="item${it.star?" star":""}">
-      ${it.img?`<div class="ph"><img src="${it.img}" alt="${it.name}" loading="lazy"></div>`:""}
-      <div class="body">
-        ${it.star?'<span class="badge" style="align-self:flex-start">Signature</span>':""}
-        <div class="row"><h3>${it.name}</h3>${it.price>0?`<span class="price">${fmt(it.price)}</span>`:""}</div>
-        <p>${it.desc}</p>
-        <div class="qty">${q
-          ? `<button class="step" type="button" data-id="${it.id}" data-d="-1" aria-label="Retirer : ${it.name}">−</button><output>${q}</output><button class="step" type="button" data-id="${it.id}" data-d="1" aria-label="Ajouter : ${it.name}">+</button>`
-          : `<button class="add" type="button" data-id="${it.id}" data-d="1">Ajouter</button>`}</div>
-      </div>
-    </article>`;
-  }).join("");
+  grid.innerHTML = MENU.map((c,i)=>`<section class="cat" id="cat-${i}">
+    <div class="cat-h"><h3>${c.cat}</h3>${c.note?`<span>${c.note}</span>`:""}</div>
+    <div class="grid">${c.items.map(card).join("")}</div>
+  </section>`).join("");
 }
 grid.addEventListener("click",e=>{
-  const b = e.target.closest("[data-id]"); if(!b) return;
-  const id=b.dataset.id, d=+b.dataset.d;
-  cart[id]=Math.max(0,(cart[id]||0)+d); if(!cart[id]) delete cart[id];
+  const o = e.target.closest("[data-sel]");
+  if(o){ sel[o.dataset.sel]=o.dataset.k; renderGrid(); return; }
+  const b = e.target.closest("[data-key]"); if(!b) return;
+  const key=b.dataset.key, d=+b.dataset.d;
+  cart[key]=Math.max(0,(cart[key]||0)+d); if(!cart[key]) delete cart[key];
   save(); renderGrid(); renderCart();
 });
 
 function renderCart(){
-  const rows = Object.entries(cart).map(([id,q])=>({it:ALL.find(x=>x.id===id),q})).filter(r=>r.it);
-  document.getElementById("lines").innerHTML = rows.map(r=>`<li><span>${r.q} × ${r.it.name}</span><span>${r.it.price>0?fmt(r.it.price*r.q):""}</span></li>`).join("");
+  const rows = Object.entries(cart).map(([key,q])=>({l:line(key),q})).filter(r=>r.l).map(r=>({name:r.l.name,price:r.l.price,q:r.q}));
+  document.getElementById("lines").innerHTML = rows.map(r=>`<li><span>${r.q} × ${esc(r.name)}</span><span>${fmt(r.price*r.q)}</span></li>`).join("");
   document.getElementById("empty").hidden = rows.length>0;
-  const allPriced = rows.length && rows.every(r=>r.it.price>0);
-  const total = rows.reduce((s,r)=>s+r.it.price*r.q,0), count = rows.reduce((s,r)=>s+r.q,0);
-  document.getElementById("total").textContent = !rows.length ? "—" : (allPriced ? fmt(total) : "Confirmé sur WhatsApp");
-  document.getElementById("fCount").textContent = count+(count>1?" articles":" article");
+  const total = rows.reduce((s,r)=>s+r.price*r.q,0), count = rows.reduce((s,r)=>s+r.q,0);
+  const deliv = (document.querySelector('input[name="mode"]:checked')||{}).value==="Livraison";
+  document.getElementById("totalLbl").textContent = deliv ? "Total (hors livraison)" : "Total";
+  document.getElementById("total").textContent = rows.length ? fmt(total) : "—";
+  document.getElementById("fCount").textContent = count+(count>1?" articles":" article")+(rows.length?" · "+fmt(total):"");
   document.getElementById("float").classList.toggle("show", count>0);
-  return {rows,total,allPriced};
+  return {rows,total,allPriced:true};
 }
 
 const addrWrap = document.getElementById("addrWrap");
 document.querySelectorAll('input[name="mode"]').forEach(r=>r.addEventListener("change",()=>{
   addrWrap.hidden = document.querySelector('input[name="mode"]:checked').value!=="Livraison";
+  renderCart();
 }));
 
 document.getElementById("form").addEventListener("submit",e=>{
@@ -464,8 +488,8 @@ document.getElementById("form").addEventListener("submit",e=>{
   err.textContent=msg; err.hidden=!msg;
   if(msg) return;
   const text = ["Salam Yaz Eat, nouvelle commande :","",
-    ...rows.map(r=>`• ${r.q} × ${r.it.name}`),"",
-    allPriced?`Total : ${fmt(total)}`:"",
+    ...rows.map(r=>`• ${r.q} × ${r.name} — ${fmt(r.price*r.q)}`),"",
+    `Total : ${fmt(total)}`+(mode==="Livraison"?" (hors livraison)":""),
     `Nom : ${name}`,
     tel?`Tél : ${tel}`:"",
     `Mode : ${mode}`+(mode==="Livraison"?` – ${addr}`:""),
