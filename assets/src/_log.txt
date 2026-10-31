@@ -1,4 +1,0 @@
-frites 200
-riz-epice 200
-sandwich-signature 200
-sandwich-marine 200

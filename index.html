@@ -8,7 +8,7 @@
 <meta name="description" content="Yaz Eat, Les Bananiers – Alger. Poulet cuit à la pierre volcanique, sauce signature maison. Commande sur WhatsApp, livraison sur tout Alger : 0553 70 41 81.">
 <meta property="og:title" content="Yaz Eat · Poulet cuit à la pierre volcanique">
 <meta property="og:description" content="Sauce signature maison. Livraison sur tout Alger : 0553 70 41 81.">
-<meta property="og:image" content="https://yazeat.vercel.app/assets/demi-poulet.webp">
+<meta property="og:image" content="https://yazeat.vercel.app/assets/menu/demi-poulet.webp">
 <meta name="theme-color" content="#0A0A0A">
 <link rel="icon" type="image/webp" href="assets/coq.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -88,6 +88,12 @@ nav.links a:hover{color:var(--blanc)}
 @keyframes slide{to{transform:translateX(-50%)}}
 
 section.blk{padding-block:72px}
+.reels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.reel{position:relative;margin:0;border-radius:var(--r);overflow:hidden;background:#000;aspect-ratio:9/16;min-width:0}
+.reel video{width:100%;height:100%;object-fit:cover;display:block}
+.reel figcaption{position:absolute;left:0;right:0;bottom:0;padding:48px 16px 16px;background:linear-gradient(transparent,rgba(10,10,10,.9));font-weight:900;text-transform:uppercase;font-size:1.05rem;line-height:1.1}
+.reel figcaption small{display:block;font-weight:400;text-transform:none;color:var(--gris);font-size:.86rem;margin-top:4px}
+@media (max-width:760px){.reels{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:72%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:none}.reels::-webkit-scrollbar{display:none}.reel{scroll-snap-align:start}}
 .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:14px;margin-bottom:30px}
 .head h2{font-size:clamp(2.1rem,5.4vw,3.6rem)}
 .head p{color:var(--gris);max-width:44ch;margin:0}
@@ -125,8 +131,6 @@ section.blk{padding-block:72px}
 .item.star{border-color:var(--orange)}
 .item .ph{aspect-ratio:16/10;overflow:hidden;background:#000}
 .item .ph img{width:100%;height:100%;object-fit:cover}
-.item .ph.ph-empty{display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#2a2622,#0d0c0b 70%)}
-.item .ph.ph-empty img{width:64px;height:auto;object-fit:contain;opacity:.35}
 .item .body{display:flex;flex-direction:column;gap:8px;padding:18px;flex:1}
 .item .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .item h3{font-size:1.15rem;letter-spacing:0}
@@ -196,7 +200,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Yaz Eat, accueil"><img src="assets/coq.webp" alt="" width="46" height="45"><b>YAZ EAT</b></a>
     <nav class="links" aria-label="Navigation">
-      <a href="#plats">Nos plats</a><a href="#menu">Menu</a><a href="#commande">Commander</a><a href="#infos">Infos</a>
+      <a href="#cuisine">Cuisine</a><a href="#plats">Nos plats</a><a href="#menu">Menu</a><a href="#commande">Commander</a><a href="#infos">Infos</a>
     </nav>
     <a class="btn btn-main" href="#menu">Commander</a>
   </div>
@@ -237,7 +241,30 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
     </div>
   </div>
 
-  <section class="blk" id="plats">
+  <section class="blk" id="cuisine">
+    <div class="wrap">
+      <div class="head">
+        <h2>Le feu, <span class="or">en vrai</span></h2>
+        <p>Filmé chez nous, aux Bananiers. La pierre, la flamme, et ce qui arrive dans ton assiette.</p>
+      </div>
+      <div class="reels">
+        <figure class="reel">
+          <video src="assets/video/grill.mp4" poster="assets/video/grill.webp" muted loop playsinline preload="none" aria-label="Le poulet sur la grille, au-dessus des flammes"></video>
+          <figcaption>Sur la flamme<small>Le poulet saisi au feu, puis sur la pierre.</small></figcaption>
+        </figure>
+        <figure class="reel">
+          <video src="assets/video/frites.mp4" poster="assets/video/frites.webp" muted loop playsinline preload="none" aria-label="Frites assaisonnées servies à la pince"></video>
+          <figcaption>Frites assaisonnées<small>Sorties du bain, servies chaudes.</small></figcaption>
+        </figure>
+        <figure class="reel">
+          <video src="assets/video/enseigne.mp4" poster="assets/video/enseigne.webp" muted loop playsinline preload="none" aria-label="L'enseigne lumineuse Yaz Eat"></video>
+          <figcaption>Les Bananiers<small>Sur place, à emporter ou en livraison.</small></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="plats" style="padding-top:0">
     <div class="wrap">
       <div class="head">
         <h2>Les plats, <span class="or">tels qu'ils arrivent</span></h2>
@@ -389,15 +416,15 @@ const MENU = [
     {id:"p3", name:"Quart de poulet", desc:"La portion solo. Choisis cuisse ou blanc.", img:"assets/menu/quart.webp", opts:[{k:"cuisse",label:"Cuisse",price:400},{k:"blanc",label:"Blanc",price:450}]}
   ]},
   {cat:"Sandwichs", items:[
-    {id:"s1", name:"Sandwich poulet signature", desc:"Poulet cuit à la pierre, sauce signature maison.", price:350, star:true},
-    {id:"s2", name:"Sandwich mariné", desc:"Poulet mariné, grillé à la pierre.", price:350},
+    {id:"s1", name:"Sandwich poulet signature", desc:"Poulet cuit à la pierre, sauce signature maison.", price:350, star:true, img:"assets/menu/sandwich-signature.webp"},
+    {id:"s2", name:"Sandwich mariné", desc:"Poulet mariné, grillé à la pierre.", price:350, img:"assets/menu/sandwich-marine.webp"},
     {id:"s3", name:"Sandwich kebda", desc:"Le sandwich kebda.", price:300, img:"assets/menu/kebda.webp"}
   ]},
   {cat:"Accompagnements", items:[
     {id:"a1", name:"Riz sucré", desc:"L'accompagnement signature de la maison.", price:250, img:"assets/menu/riz-sucre.webp"},
-    {id:"a2", name:"Riz épicé", desc:"Riz relevé aux épices.", price:250},
+    {id:"a2", name:"Riz épicé", desc:"Riz relevé aux épices.", price:250, img:"assets/menu/riz-epice.webp"},
     {id:"a3", name:"Borghol", desc:"Le borghol maison.", price:250, img:"assets/menu/borghol.webp"},
-    {id:"a4", name:"Frites", desc:"Choisis ton goût.", opts:[{k:"simple",label:"Simple",price:200},{k:"fromage",label:"Goût fromage",price:200},{k:"fume",label:"Goût fumé",price:200}]},
+    {id:"a4", name:"Frites", desc:"Choisis ton goût.", img:"assets/menu/frites.webp", opts:[{k:"simple",label:"Simple",price:200},{k:"fromage",label:"Goût fromage",price:200},{k:"fume",label:"Goût fumé",price:200}]},
     {id:"a5", name:"Salade", desc:"Salade fraîche.", price:200, img:"assets/menu/salade.webp"}
   ]}
 ];
@@ -430,7 +457,7 @@ function card(it){
   const q = cart[key]||0;
   const price = it.opts ? it.opts.find(o=>o.k===sel[it.id]).price : it.price;
   return `<article class="item${it.star?" star":""}">
-    <div class="ph${it.img?"":" ph-empty"}">${it.img?`<img src="${it.img}" alt="${esc(it.name)}" loading="lazy">`:`<img src="assets/coq.webp" alt="" loading="lazy">`}</div>
+    <div class="ph"><img src="${it.img}" alt="${esc(it.name)}" loading="lazy" width="720" height="450"></div>
     <div class="body">
       ${it.star?'<span class="badge" style="align-self:flex-start">Signature</span>':""}
       <div class="row"><h3>${esc(it.name)}</h3><span class="price">${fmt(price)}</span></div>
@@ -525,6 +552,14 @@ document.getElementById("copyNum").addEventListener("click",ev=>{
 })();
 
 renderGrid(); renderCart();
+
+(function(){
+  const vids=[...document.querySelectorAll(".reel video")];
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){ vids.forEach(v=>v.controls=true); return; }
+  if(!("IntersectionObserver" in window)){ vids.forEach(v=>v.play().catch(()=>{})); return; }
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ e.isIntersecting ? e.target.play().catch(()=>{}) : e.target.pause(); }),{threshold:.35});
+  vids.forEach(v=>io.observe(v));
+})();
 </script>
 </body>
 </html>
